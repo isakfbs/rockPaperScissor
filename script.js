@@ -1,5 +1,14 @@
 "use restrict"
 
+const buttons = document.querySelectorAll('[data]');
+const display = document.querySelector('.display');
+const scoreDisplay = document.querySelector('.score');
+let playerScore = 0;
+let machineScore = 0;
+
+
+// console.log(display);
+
 //Create a function called getComputerChoice, that should randomly return either
 //Rock, Paper or Scissors
 
@@ -24,18 +33,25 @@
 //it should take two parameters - the playerSelection and computerSelection and return
 // a string that declares the winner of the round like so: "You Lose! Paper beats Rock"
 
-    function playSingleRound(computerSelection){
-        const playerSelection = prompt('Rock, Paper or Scissors?').toLowerCase();
-        if(playerSelection == "rock" && computerSelection == "paper"){
-            return "You Lose! Paper beats Rock";
-        }else if(playerSelection == "paper" && computerSelection == "scissors"){
-            return "You Lose! Scissors beats Paper";
-        }else if(playerSelection == "scissors" && computerSelection == "rock"){
-            return "You Lose! Rock beats Scissors";
-        }else if(playerSelection == computerSelection){
-            return "It was a tie game";
-        }else {
-            return "You won!";
+function playRound(playerSelection, computerSelection){
+        if(playerScore < 5 && machineScore < 5){
+            if(playerSelection == "rock" && computerSelection == "paper"){
+                machineScore++;
+                return "You Lose! Paper beats Rock";
+            }else if(playerSelection == "paper" && computerSelection == "scissors"){
+                machineScore++;
+                return "You Lose! Scissors beats Paper";
+            }else if(playerSelection == "scissors" && computerSelection == "rock"){
+                machineScore++;
+                return "You Lose! Rock beats Scissors";
+            }else if(playerSelection == computerSelection){
+                return "It was a tie game";
+            }else {
+                playerScore++;
+                return "You won!";
+            }
+        }else{
+            return "END GAME!";
         }
     }
     // console.log(playSingleRound(computerChoice));
@@ -44,11 +60,19 @@
 // of this one to play a 5 round game that keeps score and reports a winner 
 // or loser at the end.
 
-    function game(){
-        for(let i = 0; i < 5; i++){
-            const computerChoice = getComputerChoice();
-            console.log(playSingleRound(computerChoice));
-        }
+    function game(playerChoice){
+        const playerSelection = playerChoice.toLowerCase();
+        const computerChoice = getComputerChoice();
+        display.textContent = playRound(playerSelection, computerChoice);
     }
 
-    game();
+    // Create three buttons, one for each selection. 
+    // Add an event listener to the buttons that call your 
+    // playRound function with the correct playerSelection every time a button is clicked.
+    // (you can keep the console.logs for this step)
+
+
+    buttons.forEach(button => button.addEventListener('click', function(){
+        game(this.textContent);
+        scoreDisplay.textContent = `Player: ${playerScore}, Machine: ${machineScore}`;
+    }));
